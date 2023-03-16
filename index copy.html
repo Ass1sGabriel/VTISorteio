@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sistema de sorteio</title>
+  </head>
+  <body>
+    <h1>Sistema de sorteio</h1>
+    <form>
+      <label for="nome">Insira um nome:</label>
+      <input type="text" id="nome" />
+      <button type="button" onclick="adicionarNome()">Adicionar</button>
+    </form>
+
+    <ul id="nomes"></ul>
+
+    <button type="button" onclick="sortear()">Sortear</button>
+
+    <script>
+      const nomes = [];
+
+      function adicionarNome() {
+        const nomeInput = document.getElementById("nome");
+        const nome = nomeInput.value;
+
+        if (nome) {
+          nomes.push(nome);
+          nomeInput.value = "";
+          atualizarNomes();
+        }
+      }
+
+      function atualizarNomes() {
+        const listaNomes = document.getElementById("nomes");
+        listaNomes.innerHTML = "";
+
+        nomes.forEach(function (nome) {
+          const li = document.createElement("li");
+          li.innerText = nome;
+          listaNomes.appendChild(li);
+        });
+
+        localStorage.setItem("nomes", JSON.stringify(nomes));
+      }
+
+      function sortear() {
+        const vencedor =
+          nomes[Math.floor(Math.random() * nomes.length)];
+
+        alert(`O vencedor é: ${vencedor}`);
+      }
+
+      // Carrega nomes do Local Storage
+      const nomesLocalStorage = JSON.parse(localStorage.getItem("nomes"));
+      if (nomesLocalStorage) {
+        nomes.push(...nomesLocalStorage);
+        atualizarNomes();
+      }
+    </script>
+  </body>
+</html>
